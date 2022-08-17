@@ -1,10 +1,13 @@
 from app import app
+from flask import render_template
+from app.forms import RegisterForm
 
 
 @app.route('/')
 def index():
-    return 'hello world'
+    return render_template('index.html')
 
-@app.route('/test')
-def test():
-    return 'this is a test'
+@app.route('/register')
+def register():
+    form = RegisterForm()
+    return render_template('register.html', form=form)
