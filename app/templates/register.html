@@ -4,7 +4,7 @@
 
 {% block content %} 
 
-<form>
+<form method="post">
     {{ form.csrf_token }}
     <div class="form-group">
         {{ form.name.label }}
