@@ -8,7 +8,7 @@ app.config.from_object(Config)
 
 # create an instance of SQLAlchemy (the ORM) with the Flask Application
 db = SQLAlchemy(app)
-migrate = Migrate(app, db)
+migrate = Migrate(app, db, render_as_batch=True)
 
 from . import routes, models
 
