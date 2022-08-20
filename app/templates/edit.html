@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %} Edit {% endblock title %}
+
+{% block content %}
+
+<h2> Edit Phone Number or Address for {{ address.name }} </h2>
+
+<form action="" method="post">
+    {{form.csrf_token}}
+    <div class="form-group">
+        {{ form.name.label }}
+        {{ form.name(class='form-control', value=address.name) }}
+
+        {{ form.phone_number.label }}
+        {{ form.phone_number(class='form-control', value=address.phone_number) }}
+
+        {{ form.address.label }}
+        {{ form.address(class='form-control', value=address.address) }}
+
+        {{ form.submit(class='btn btn-success') }}
+    </div>
+</form>
+
+{% endblock content %}

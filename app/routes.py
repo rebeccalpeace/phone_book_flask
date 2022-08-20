@@ -68,3 +68,21 @@ def logout():
     logout_user()
     flash('You have successfully logged out.', 'success')
     return redirect(url_for('index'))
+
+
+@app.route('/edit', methods=['GET', 'POST'])
+@login_required
+def edit(id):
+    address_to_edit = Address.query.get_or_404(id)
+    if address_to_edit.book_user != current_user:
+        flash('You do not have permission to edit this post.', 'danger')
+        return redirect(url_for('view', id=id))
+    form = RegisterForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        phone_number = form.phone_number.data
+        address = form.address.data
+        address_to_edit.update(name=name, phone_number=phone_number, address=address)
+        flash(f"{address_to_edit.name} has been updated.", 'success')
+        return redirect(url_for('view', id=id))
+    return render_template('edit.html', address=address_to_edit, form=form)

@@ -21,6 +21,12 @@ class Address(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def update(self, **kwargs):
+        for key, value in kwargs.items():
+            if key in ('name', 'phone_number', 'address'):
+                setattr(self, key, value)
+        db.session.commit()
+
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(50), nullable=False, unique=True)
