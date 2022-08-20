@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %} View Contacts {% endblock title %}
+
+{% block content %}
+
+{% if current_user.is_authenticated %}
+    <h6>Signed in as: {{ current_user.username }}</h6>
+    <h2 class="text-center">Your Contacts</h2>
+
+    {% for address in addresses %}
+        <div class="card w-50 ">
+            <div class="card-body">
+                <h5 class="card-title">{{ address.name }}</h5>
+                <p class="card-text">{{ address.address }}<br>({{ address.phone_number[:3] }}) {{ address.phone_number[3:6] }}-{{ address.phone_number[6:] }}</p>
+                <a href="#" class="btn btn-primary">Edit</a>
+                <a href="#" class="btn btn-primary">Delete</a>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endif %}
+{% endblock content %}

@@ -4,8 +4,8 @@
 
 {% block content %}
 
-<form action="" method="post">
-    {{ form.csrt_token }}
+<form method="post">
+    {{ form.csrf_token }}
     <div class="form-group ms-5 me-5">
 
         {{ form.username.label }}

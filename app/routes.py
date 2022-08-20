@@ -1,5 +1,3 @@
-from functools import reduce
-from re import U
 from app import app
 from flask import render_template, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
@@ -36,7 +34,7 @@ def login():
         username = form.username.data
         password = form.password.data
         user = User.query.filter_by(username=username).first()
-        if user is not None and usr.check_password(password):
+        if user is not None and user.check_password(password):
             login_user(user)
             flash(f"Welcome back {user.username}!", "success")
             return redirect(url_for('index'))
@@ -45,7 +43,11 @@ def login():
             return redirect(url_for('login'))
     return render_template('login.html', form=form)
 
-
+@app.route('/view')
+@login_required
+def view():
+    addresses = Address.query.filter_by(user_id=current_user.id)
+    return render_template('view.html', addresses=addresses)
 
 @app.route('/register',  methods=['GET', 'POST'])
 def register():
@@ -60,3 +62,9 @@ def register():
         print(f"{new_address.name} has been created.")
         return redirect(url_for('index'))
     return render_template('register.html', form=form)
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    flash('You have successfully logged out.', 'success')
+    return redirect(url_for('index'))
