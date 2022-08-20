@@ -8,12 +8,12 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <!-- <link rel="stylesheet" href="assets/css/style.css"> -->
-        <title>{% block title%}{% endblock title %}</title>
+        <title>{% block title %}{% endblock title %}</title>
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">Navbar</a>
+                <a class="navbar-brand" href="#">Address Book</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
                 </button>
@@ -32,7 +32,11 @@
                 </div>
             </div>
         </nav>
-        <div>
+        <div class="container">   
+            {% if current_user.is_authenticated %}
+            <h6 class="text-end">Signed in as: {{ current_user.username }}</h6>    
+            {% endif %}    
+            {% include 'alert.html' %}
             {% block content %}
             {% endblock content %}
         </div>

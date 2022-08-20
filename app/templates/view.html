@@ -5,16 +5,36 @@
 {% block content %}
 
 {% if current_user.is_authenticated %}
-    <h6>Signed in as: {{ current_user.username }}</h6>
-    <h2 class="text-center">Your Contacts</h2>
-
-    {% for address in addresses %}
+    <h3 class="text-center mt-3">Your Contacts</h3>
+    {% for address in addresses | sort(attribute='name') %}
         <div class="card w-50 ">
             <div class="card-body">
+
                 <h5 class="card-title">{{ address.name }}</h5>
                 <p class="card-text">{{ address.address }}<br>({{ address.phone_number[:3] }}) {{ address.phone_number[3:6] }}-{{ address.phone_number[6:] }}</p>
-                <a href="#" class="btn btn-primary">Edit</a>
-                <a href="#" class="btn btn-primary">Delete</a>
+                {% if current_user == address.book_user %}
+                <a href="{{ url_for('edit', id=address.id) }}" class="btn btn-primary btn-sm">Edit</a>
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete</button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to delete {{ address.name }} from your contacts?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <a href="{{ url_for('delete', id=address.id) }}" class="btn btn-success">Delete</a>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </div>
     {% endfor %}

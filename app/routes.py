@@ -50,6 +50,7 @@ def view():
     return render_template('view.html', addresses=addresses)
 
 @app.route('/register',  methods=['GET', 'POST'])
+@login_required
 def register():
     form = RegisterForm()
     # if the form is submitted and all the data is valid
@@ -60,7 +61,7 @@ def register():
         address = form.address.data
         new_address = Address(name=name, phone_number=phone_number, address=address, user_id=current_user.id)
         print(f"{new_address.name} has been created.")
-        return redirect(url_for('index'))
+        return redirect(url_for('view'))
     return render_template('register.html', form=form)
 
 @app.route('/logout')
@@ -70,13 +71,13 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/edit', methods=['GET', 'POST'])
+@app.route('/<id>/edit', methods=['GET', 'POST'])
 @login_required
 def edit(id):
     address_to_edit = Address.query.get_or_404(id)
     if address_to_edit.book_user != current_user:
-        flash('You do not have permission to edit this post.', 'danger')
-        return redirect(url_for('view', id=id))
+        flash('You do not have permission to edit this contact.', 'danger')
+        return redirect(url_for('index', id=id))
     form = RegisterForm()
     if form.validate_on_submit():
         name = form.name.data
@@ -86,3 +87,14 @@ def edit(id):
         flash(f"{address_to_edit.name} has been updated.", 'success')
         return redirect(url_for('view', id=id))
     return render_template('edit.html', address=address_to_edit, form=form)
+
+@app.route('/<id>/delete')
+@login_required
+def delete(id):
+    address_to_delete = Address.query.get_or_404(id)
+    if address_to_delete.book_user != current_user:
+        flash('You do not have permission to delete this contact.', 'danger')
+        return redirect(url_for('index'))
+    address_to_delete.delete()
+    flash(f"{address_to_delete.name} has been deleted from your contacts.", "success")
+    return redirect(url_for('view'))
