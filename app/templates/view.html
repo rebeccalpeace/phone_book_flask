@@ -14,9 +14,13 @@
                 <p class="card-text">
                     {{ address.address }}<br>
                     {{ address.city }}, {{ address.state }} {{ address.zip_code }}</p>
-                <p class="card-text">({{ address.phone_number[:3] }}) {{ address.phone_number[3:6] }}-{{ address.phone_number[6:] }}</p>
+                {% if address.phone_number|length == 10 %}
+                    <p class="card-text">({{ address.phone_number[:3] }}) {{ address.phone_number[3:6] }}-{{ address.phone_number[6:] }}</p>
+                {% else %}
+                    <p class="card-text">{{ address.phone_number[0:3] }}-{{ address.phone_number[3:] }}</p>
+                {% endif %}
                 {% if current_user == address.book_user %}
-                <a href="{{ url_for('edit', id=address.id) }}" class="btn btn-primary btn-sm">Edit</a>
+                <a href="{{ url_for('edit', id=address.id) }}" class="btn btn-warning btn-sm">Edit</a>
                 <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete</button>
 
                 <!-- Modal -->
@@ -28,7 +32,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            Are you sure you want to delete {{ address.name }} from your contacts?
+                            Are you sure you want to delete {{ address.first_name }} from your contacts?
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
