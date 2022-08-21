@@ -56,11 +56,15 @@ def register():
     # if the form is submitted and all the data is valid
     if form.validate_on_submit():
         print('Form has been validated!')
-        name = form.name.data
+        first_name = form.first_name.data
+        last_name = form.last_name.data
         phone_number = form.phone_number.data
         address = form.address.data
-        new_address = Address(name=name, phone_number=phone_number, address=address, user_id=current_user.id)
-        print(f"{new_address.name} has been created.")
+        city = form.city.data
+        state = form.state.data
+        zip_code = form.zip_code.data
+        new_address = Address(first_name=first_name, last_name=last_name, phone_number=phone_number, address=address, city=city, state=state, zip_code=zip_code, user_id=current_user.id)
+        print(f"{new_address.first_name} has been created.")
         return redirect(url_for('view'))
     return render_template('register.html', form=form)
 
@@ -80,11 +84,15 @@ def edit(id):
         return redirect(url_for('index', id=id))
     form = RegisterForm()
     if form.validate_on_submit():
-        name = form.name.data
+        first_name = form.first_name.data
+        last_name = form.last_name.data
         phone_number = form.phone_number.data
         address = form.address.data
-        address_to_edit.update(name=name, phone_number=phone_number, address=address)
-        flash(f"{address_to_edit.name} has been updated.", 'success')
+        city = form.city.data
+        state = form.state.data
+        zip_code = form.zip_code.data
+        address_to_edit.update(first_name=first_name, last_name=last_name, phone_number=phone_number, address=address, city=city, state=state, zip_code=zip_code)
+        flash(f"{address_to_edit.first_name} has been updated.", 'success')
         return redirect(url_for('view', id=id))
     return render_template('edit.html', address=address_to_edit, form=form)
 
@@ -96,5 +104,5 @@ def delete(id):
         flash('You do not have permission to delete this contact.', 'danger')
         return redirect(url_for('index'))
     address_to_delete.delete()
-    flash(f"{address_to_delete.name} has been deleted from your contacts.", "success")
+    flash(f"{address_to_delete.first_name} has been deleted from your contacts.", "success")
     return redirect(url_for('view'))

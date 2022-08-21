@@ -11,9 +11,13 @@ from flask_login import UserMixin
 
 class Address(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
+    first_name = db.Column(db.String(50), nullable=False)
+    last_name = db.Column(db.String(50), nullable=False)
     phone_number = db.Column(db.String(10), nullable=False, unique=True)
     address = db.Column(db.String(100), nullable = False)
+    city = db.Column(db.String(100), nullable = False)
+    state = db.Column(db.String(2), nullable = False)
+    zip_code = db.Column(db.String(5), nullable = False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __init__(self, **kwargs):
