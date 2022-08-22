@@ -27,7 +27,7 @@ class Address(db.Model):
 
     def update(self, **kwargs):
         for key, value in kwargs.items():
-            if key in ('name', 'phone_number', 'address'):
+            if key in ('first_name', 'last_name', 'phone_number', 'address', 'city', 'state', 'zip_code'):
                 setattr(self, key, value)
         db.session.commit()
 
